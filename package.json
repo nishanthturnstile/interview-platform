@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm --filter @interview-studio/web dev",
+    "dev": "pnpm --filter @interview-studio/db build && pnpm --filter @interview-studio/web dev",
     "start": "pnpm --filter @interview-studio/web start",
     "build": "pnpm -r run build",
     "typecheck": "tsc --noEmit && pnpm -r run typecheck",
@@ -12,7 +12,13 @@
     "format": "biome format --write .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "smoke:worker": "pnpm --filter @interview-studio/worker start"
+    "smoke:worker": "pnpm --filter @interview-studio/worker start",
+    "db:up": "node infra/postgres/local.mjs up",
+    "db:stop": "node infra/postgres/local.mjs stop",
+    "db:generate": "pnpm --filter @interview-studio/db db:generate",
+    "db:migrate": "node infra/postgres/local.mjs migrate",
+    "db:reset": "node infra/postgres/local.mjs reset",
+    "test:db": "pnpm build && vitest run --config vitest.db.config.ts"
   },
   "engines": {
     "node": ">=24.22.3 <25"

@@ -223,16 +223,32 @@ test("mobile navigation supports keyboard focus and reduced motion at 320px", as
   );
 });
 
-test("the staff reference fits at 200% text size", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto("/staff/design-system");
-  await page.evaluate(() => {
-    document.documentElement.style.fontSize = "200%";
+test("both layouts fit at 200% text size and load local assets", async ({
+  page,
+  baseURL,
+}) => {
+  const externalRequests: string[] = [];
+  page.on("request", (request) => {
+    if (new URL(request.url()).origin !== baseURL)
+      externalRequests.push(request.url());
   });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
-    1280,
-  );
-  await expect(
-    page.getByRole("heading", { name: "Design system" }),
-  ).toBeVisible();
+  await page.setViewportSize({ width: 1280, height: 900 });
+  for (const [route, heading] of [
+    ["/staff", "Staff workspace"],
+    ["/staff/design-system", "Design system"],
+    ["/candidate", "Candidate workspace"],
+  ]) {
+    await page.goto(route);
+    await page.evaluate(() => {
+      document.documentElement.style.fontSize = "200%";
+    });
+    expect(
+      await page.evaluate(() => {
+        const { scrollWidth, clientWidth } = document.documentElement;
+        return scrollWidth - clientWidth;
+      }),
+    ).toBe(0);
+    await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+  }
+  expect(externalRequests).toEqual([]);
 });
