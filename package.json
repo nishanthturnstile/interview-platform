@@ -1,0 +1,35 @@
+{
+  "name": "interview-platform",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @interview-studio/web dev",
+    "start": "pnpm --filter @interview-studio/web start",
+    "build": "pnpm -r run build",
+    "typecheck": "tsc --noEmit && pnpm -r run typecheck",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "smoke:worker": "pnpm --filter @interview-studio/worker start"
+  },
+  "engines": {
+    "node": ">=24.22.3 <25"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.21.0",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.21.0",
+  "devDependencies": {
+    "@biomejs/biome": "2.6.8",
+    "@playwright/test": "1.65.1",
+    "@types/node": "24.19.2",
+    "typescript": "5.9.3",
+    "vitest": "5.1.1"
+  }
+}

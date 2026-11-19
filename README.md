@@ -1,0 +1,38 @@
+# BU Interview Studio
+
+BU Interview Studio is a local, synthetic-data proof of concept for structured technical interviews. The workspace includes a Next.js app, a Node worker entry point and a TypeScript package for shared domain rules. The [M1 implementation plan](docs/m1-workspace-foundation.md) tracks the foundation work.
+
+## Start the scaffold
+
+Use Node.js `24.22.3` from `.node-version` and pnpm `12.21.0` from `package.json`. Run the commands from the repository root.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+Open `http://127.0.0.1:3000`. Pass `--port 3001` to `pnpm dev` if that port is occupied. The scaffold runs with Node and pnpm alone.
+
+## Verify the scaffold
+
+```sh
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm smoke:worker
+pnpm test:e2e
+```
+
+`pnpm build` builds all workspace packages. Run `pnpm start` to serve the built web app on loopback. `pnpm smoke:worker` runs the built Node entry point once and exits. The Playwright HTTP smoke test starts and stops its own production server on port `3100`. Set `PLAYWRIGHT_PORT` to use a different port.
+
+## Workspace layout
+
+| Directory | Contents |
+| --- | --- |
+| `apps/web` | Next.js App Router app with Tailwind CSS v4 and the Turbopack loader |
+| `apps/worker` | Standalone TypeScript worker entry point |
+| `packages/domain` | Package boundary for shared domain rules |
+| `tests` | Vitest checks and Playwright production smoke tests |
+
+The scaffold uses the official generators and tooling. [pnpm init](https://pnpm.io/cli/init) · [Create Next App](https://nextjs.org/docs/app/api-reference/cli/create-next-app) · [Biome](https://biomejs.dev/installation/quick-start/) · [Vitest](https://vitest.dev/guide/) · [Playwright](https://playwright.dev/docs/intro)
