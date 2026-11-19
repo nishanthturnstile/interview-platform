@@ -13,6 +13,8 @@ pnpm dev
 
 Open `http://127.0.0.1:3000`. Pass `--port 3001` to `pnpm dev` if that port is occupied. The scaffold runs with Node and pnpm alone.
 
+The staff workspace is at `/staff`, the candidate preview is at `/candidate`, and the component reference is at `/staff/design-system`. Use the Dark mode button in either header to change the theme. The app remembers the setting across both layouts.
+
 ## Verify the scaffold
 
 ```sh
@@ -21,10 +23,15 @@ pnpm typecheck
 pnpm test
 pnpm build
 pnpm smoke:worker
+pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-`pnpm build` builds all workspace packages. Run `pnpm start` to serve the built web app on loopback. `pnpm smoke:worker` runs the built Node entry point once and exits. The Playwright HTTP smoke test starts and stops its own production server on port `3100`. Set `PLAYWRIGHT_PORT` to use a different port.
+`pnpm build` builds all workspace packages. Run `pnpm start` to serve the built web app on loopback. `pnpm smoke:worker` runs the built Node entry point once and exits. The Playwright suite starts and stops its own production server on port `3100`. It checks the theme, rendered colors, navigation and focus in Chromium. Set `PLAYWRIGHT_PORT` to use a different port.
+
+## Design system
+
+The web app uses the official shadcn/ui Radix Nova components with Tailwind CSS v4. Add components with `pnpm dlx shadcn@latest add <component>` from `apps/web`. The app loads its light and dark tokens from `apps/web/src/app/globals.css` and uses local system font stacks. [Design system specification](docs/design-system.md) · [shadcn/ui theming](https://ui.shadcn.com/docs/theming)
 
 ## Workspace layout
 
